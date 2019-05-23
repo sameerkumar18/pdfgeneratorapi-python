@@ -72,37 +72,37 @@ class APIBase(object):
                 "{0} is an invalid document format.".format(self.document_format)
             )
 
-    def _prepare_headers(self, resource: str = None, params: bool = False):
-        """ Prepares headers for API request. Supports both Simple and Signature Auth.
-        :param resource: Resource endpoint that needs to be hit. ..API.com/<RESOURCE>
-        :param params: Returns the parameters which provide auth in case of one-click Editor URL generation.
+    def _get_signature(self, resource):
+        """ Generates a signature based on `api_key`, `workspace` and `api_secret`. """
+        message = self.__api_key + resource + self.__workspace
+        signature = hmac.new(
+            bytes(self.__api_secret, "UTF-8"),
+            bytes(message, "UTF-8"),
+            hashlib.sha256,
+        ).hexdigest()
+        return signature
+
+    def prepare_auth_params(self, resource):
+        """ Prepares auth params for one-click URL generation. Used in editor URL.
+        :param resource: Resource endpoint that needs to be hit. ..API_URL../<RESOURCE>
         Returns a <dict>.
         """
+        # Always use signature auth here. Simple Auth would expose secret key.
+        query_params = {
+            "key": self.__api_key,
+            "signature": self._get_signature(resource),
+            "workspace": self.__workspace,
+        }
+        return query_params
 
-        def _get_signature():
-            """ Generates a signature based on `api_key`, `workspace` and `api_secret`. """
-            message = self.__api_key + resource + self.__workspace
-            signature = hmac.new(
-                bytes(self.__api_secret, "UTF-8"),
-                bytes(message, "UTF-8"),
-                hashlib.sha256,
-            ).hexdigest()
-            return signature
-
-        def _prepare_auth_params():
-            """ Prepares auth params for one-click URL generation. Used in editor URL. """
-            # Always use signature auth here. Simple Auth would expose secret key.
-            query_params = {
-                "key": self.__api_key,
-                "signature": _get_signature(),
-                "workspace": self.__workspace,
-            }
-            return query_params
-
-        if params:
-            return _prepare_auth_params()
+    def prepare_headers(self, resource: str = None):
+        """ Prepares headers for API request. Supports both Simple and Signature Auth.
+        :param resource: Resource endpoint that needs to be hit. ..API_URL../<RESOURCE>
+        Returns a <dict>.
+        """
+        import pdfgeneratorapi
         user_agent = "pdfgeneratorapi/{api_region}/{api_version} Python/{package_version}/{sys_version}".format(
-            package_version="",
+            package_version=pdfgeneratorapi.__version__,
             sys_version=sys.version.split(" ", 1)[0],
             api_region=self.region,
             api_version=self.version,
@@ -112,7 +112,7 @@ class APIBase(object):
                 raise Exception(
                     "Signature Auth requires resource for signature creation."
                 )
-            header_auth = {"X-Auth-Signature": _get_signature()}
+            header_auth = {"X-Auth-Signature": self._get_signature(resource)}
         else:
             header_auth = {"X-Auth-Secret": self.__api_secret}
         request_headers = {
@@ -171,7 +171,7 @@ class PDFGenerator(APIBase):
                 raise Exception
         response = requests.get(
             url=self.API_URL + resource,
-            headers=self._prepare_headers(resource),
+            headers=self.prepare_headers(resource),
             params=request_params,
         )
         return response
@@ -190,7 +190,7 @@ class PDFGenerator(APIBase):
         resource = "templates/{0}".format(str(template_id))
         response = requests.get(
             url="{base_url}{resource}".format(base_url=self.API_URL, resource=resource),
-            headers=self._prepare_headers(resource),
+            headers=self.prepare_headers(resource),
         )
         # TODO: Great to have: ...get_template(template_id=123).delete()
         # TODO: Great to have: ...get_template(template_id=123).copy(name='first_copy')
@@ -210,7 +210,7 @@ class PDFGenerator(APIBase):
         resource = "templates"
         response = requests.post(
             url=self.API_URL + resource,
-            headers=self._prepare_headers(resource),
+            headers=self.prepare_headers(resource),
             json={"name": name},
         )
         return response
@@ -231,7 +231,7 @@ class PDFGenerator(APIBase):
         request_params = {"name": name}
         response = requests.post(
             url=self.API_URL + resource,
-            headers=self._prepare_headers(resource),
+            headers=self.prepare_headers(resource),
             params=request_params,
         )
         return response
@@ -249,7 +249,7 @@ class PDFGenerator(APIBase):
         """
         resource = "templates/{template_id}".format(template_id=str(template_id))
         response = requests.delete(
-            url=self.API_URL + resource, headers=self._prepare_headers(resource)
+            url=self.API_URL + resource, headers=self.prepare_headers(resource)
         )
         return response
 
@@ -285,13 +285,13 @@ class PDFGenerator(APIBase):
         request_params = {"format": document_format, "output": response_format}
         response = requests.post(
             url=self.API_URL + resource,
-            headers=self._prepare_headers(resource),
+            headers=self.prepare_headers(resource),
             params=request_params,
             json=data,
         )
         return response
 
-    def get_editor_url(self, template_id: int, data: dict):
+    def get_editor_url(self, template_id: int, data):
         """ Prepares and returns a one-click URL to the web editor.
 
         :param template_id: Unique ID of the template.
@@ -306,7 +306,7 @@ class PDFGenerator(APIBase):
             data = json.dumps(data)
 
         resource = "templates/{template_id}/editor".format(template_id=str(template_id))
-        request_params = self._prepare_headers(resource=resource, params=True)
+        request_params = self.prepare_auth_params(resource=resource)
         request_params.update({"data": data})
         url = "{base_url}{resource}?{query_string}".format(
             base_url=self.API_URL,
