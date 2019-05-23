@@ -30,12 +30,13 @@ Code            Description
 class PDFGeneratorAPIException(Exception):
     def __init__(self, message=None, response=None):
         super(PDFGeneratorAPIException, self).__init__(message)
-        http_body = response.text
-        http_status = response.status_code
-        json_body = response.json()
-        self.http_body = http_body
-        self.http_status = http_status
-        self.json_body = json_body
+        if response:
+            http_body = response.text
+            http_status = response.status_code
+            json_body = response.json()
+            self.http_body = http_body
+            self.http_status = http_status
+            self.json_body = json_body
 
 
 class ResourceEntityNotFound(PDFGeneratorAPIException):

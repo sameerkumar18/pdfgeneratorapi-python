@@ -21,7 +21,7 @@ def create_py_object(item: dict):
 
 def dict_to_object(data: dict):
     response_dict = {}
-    for key,value in data.items():
+    for key, value in data.items():
         if not value:
             continue
         if type(value) is dict:

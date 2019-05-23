@@ -17,6 +17,7 @@ import urllib
 import requests
 from .constants import ALL_OUTPUT_FORMATS, ALL_DOCUMENT_FORMATS, ALL_ACCESS_TYPES
 from .decorators import make_response
+from .exceptions import IncorrectParameterError, RequiredParameterMissing
 
 
 class APIBase(object):
@@ -32,23 +33,18 @@ class APIBase(object):
     :param signature_auth: Response format. Available formats: (base64, url, I). Default: False.
     :param region: The region of the server. Basically the subdomain. This wrapper was made in consideration of us1.
     :param version: The version of the PDFGeneratorAPI.com. This wrapper was made in consideration of v3.
-    :param complete_url: The complete base url of the PDFGeneratorAPI before the resource endpoints.
+    :param complete_url: The complete base url of the PDFGeneratorAPI excluding the resource endpoints.
     """
 
     def __init__(self, **kwargs):
-        self.__api_key = kwargs.get("api_key", os.environ.get(""))
-        self.__api_secret = kwargs.get("api_secret", os.environ.get(""))
-        self.__workspace = kwargs.get("workspace", os.environ.get(""))  # )
-        self.document_format = kwargs.get("document_format", "pdf")  # Document format.
+        self.__api_key = kwargs.get("api_key", os.environ.get("PDFGENERATORAPI_KEY"))
+        self.__api_secret = kwargs.get("api_secret", os.environ.get("PDFGENERATORAPI_SECRET"))
+        self.__workspace = kwargs.get("workspace", os.environ.get("PDFGENERATORAPI_WORKSPACE"))
+        if not (self.__api_key and self.__api_secret and self.__workspace):
+            raise RequiredParameterMissing('Missing API Required Parameters')
+        self.document_format = kwargs.get("document_format", "pdf")
         self.response_format = kwargs.get("response_format", "base64")
         self.signature_auth = kwargs.get("signature_auth", True)
-
-        if self.response_format not in ALL_OUTPUT_FORMATS:
-            # raise e
-            pass
-        if self.document_format not in ALL_DOCUMENT_FORMATS:
-            # raise e
-            pass
 
         self.region = kwargs.get("region", "us1")
         self.version = kwargs.get("version", "v3")
@@ -57,6 +53,18 @@ class APIBase(object):
             "https://" + self.region + ".pdfgeneratorapi.com/api/" + self.version + "/"
         )
         self.API_URL = kwargs.get("complete_url", complete_url)
+
+        self._validate_formats(self.document_format, self.response_format)
+
+    def _validate_formats(self, document_format, response_format):
+        if response_format not in ALL_OUTPUT_FORMATS:
+            raise IncorrectParameterError(
+                "{0} is an invalid output format.".format(self.response_format)
+            )
+        if document_format not in ALL_DOCUMENT_FORMATS:
+            raise IncorrectParameterError(
+                "{0} is an invalid document format.".format(self.document_format)
+            )
 
     def _prepare_headers(self, resource: str = None, params: bool = False):
         """ Prepares headers for API request. Supports both Simple and Signature Auth.
@@ -258,24 +266,21 @@ class PDFGenerator(APIBase):
           >>> pdfg_client.create_document(template_id=123, data={'name': 'Sameer Kumar'})
            <PDFGeneratorResponse>
         """
-        resource = "templates/{template_id}/output".format(template_id=str(template_id))
-        request_params = (
-            (
-                "format",
-                self.document_format if document_format is None else document_format,
-            ),
-            (
-                "output",
-                self.response_format if response_format is None else response_format,
-            ),
+        document_format = (
+            self.document_format if document_format is None else document_format
         )
+        response_format = (
+            self.response_format if response_format is None else response_format
+        )
+        self._validate_formats(document_format, response_format)
+        resource = "templates/{template_id}/output".format(template_id=str(template_id))
+        request_params = {"format": document_format, "output": response_format}
         response = requests.post(
             url=self.API_URL + resource,
             headers=self._prepare_headers(resource),
             params=request_params,
             json=data,
         )
-        # print(response.json())
         return response
 
     def get_editor_url(self, template_id: int, data: dict):

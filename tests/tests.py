@@ -8,8 +8,7 @@ from pdfgeneratorapi.decorators import make_response
 
 class TestCase(unittest.TestCase):
     def setUp(self):
-        self.pgi = PDFGenerator(
-        )
+        self.pgi = PDFGenerator()
 
     def prepare_response(self, fixture_name):
         fixture = self._load_fixture(fixture_name)
