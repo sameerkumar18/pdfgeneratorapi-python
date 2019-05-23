@@ -38,10 +38,14 @@ class APIBase(object):
 
     def __init__(self, **kwargs):
         self.__api_key = kwargs.get("api_key", os.environ.get("PDFGENERATORAPI_KEY"))
-        self.__api_secret = kwargs.get("api_secret", os.environ.get("PDFGENERATORAPI_SECRET"))
-        self.__workspace = kwargs.get("workspace", os.environ.get("PDFGENERATORAPI_WORKSPACE"))
+        self.__api_secret = kwargs.get(
+            "api_secret", os.environ.get("PDFGENERATORAPI_SECRET")
+        )
+        self.__workspace = kwargs.get(
+            "workspace", os.environ.get("PDFGENERATORAPI_WORKSPACE")
+        )
         if not (self.__api_key and self.__api_secret and self.__workspace):
-            raise RequiredParameterMissing('Missing API Required Parameters')
+            raise RequiredParameterMissing("Missing API Required Parameters")
         self.document_format = kwargs.get("document_format", "pdf")
         self.response_format = kwargs.get("response_format", "base64")
         self.signature_auth = kwargs.get("signature_auth", True)
