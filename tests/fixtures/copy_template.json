@@ -1,0 +1,85 @@
+{
+  "response": {
+    "id": "24387",
+    "name": "Copied template",
+    "tags": "",
+    "layout": {
+      "format": "A4",
+      "unit": "cm",
+      "orientation": "portrait",
+      "rotation": 0,
+      "margins": {
+        "top": 0.5,
+        "left": 0.5,
+        "right": 0.5,
+        "bottom": 0.5
+      },
+      "emptyLabels": 0,
+      "width": 21,
+      "height": 29.7,
+      "repeatLayout": null
+    },
+    "pages": [
+      {
+        "width": 21,
+        "height": 29.7,
+        "components": [
+          {
+            "width": 3.95,
+            "height": 0.47,
+            "top": 0.18,
+            "left": 0.26,
+            "zindex": 1005,
+            "phpClassName": "Reports_Component_CustomText",
+            "className": "CustomText",
+            "name": "Text",
+            "preview": null,
+            "value": "Component value",
+            "defaultValue": "{value}",
+            "dataIndex": "randomDataIndexForFlexHeight",
+            "borderStatus": {
+              "top": true,
+              "right": true,
+              "bottom": true,
+              "left": true
+            },
+            "borderWidth": 0,
+            "borderColor": "#000000",
+            "borderStyle": "none",
+            "backgroundColor": "#ffffff",
+            "useFlexHeight": true,
+            "sortBy": [],
+            "sortDir": "ASC",
+            "filterBy": [],
+            "groupBy": [],
+            "pivotOn": [],
+            "pivotColumns": [],
+            "pivotValues": [],
+            "userRights": {
+              "canEdit": true,
+              "canMove": true,
+              "canRemove": true,
+              "canResize": true
+            },
+            "fontFamily": "opensans",
+            "fontAlign": "left",
+            "fontSize": 12,
+            "fontType": [],
+            "fontColor": "#000000",
+            "fontValign": "T",
+            "conditionalFormats": []
+          }
+        ],
+        "margins": {
+          "right": 0.5,
+          "bottom": 0.5
+        },
+        "border": false
+      }
+    ],
+    "dataSettings": {
+      "sortBy": [],
+      "filterBy": []
+    }
+  }
+}

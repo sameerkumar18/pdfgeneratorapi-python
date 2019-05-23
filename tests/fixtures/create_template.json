@@ -1,0 +1,39 @@
+{
+  "response": {
+    "id": "24386",
+    "name": "My new template",
+    "tags": null,
+    "layout": {
+      "format": "A4",
+      "unit": "cm",
+      "orientation": "portrait",
+      "rotation": 0,
+      "margins": {
+        "top": 0,
+        "left": 0,
+        "right": 0,
+        "bottom": 0
+      },
+      "emptyLabels": 0,
+      "width": 21,
+      "height": 29.7,
+      "repeatLayout": null
+    },
+    "pages": [
+      {
+        "width": 21,
+        "height": 29.7,
+        "components": [],
+        "margins": {
+            "right": 0,
+            "bottom": 0
+        },
+        "border": false
+      }
+    ],
+    "dataSettings": {
+      "sortBy": [],
+      "filterBy": []
+    }
+  }
+}

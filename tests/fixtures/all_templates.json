@@ -1,0 +1,21 @@
+{
+  "response": [
+    {
+      "id": 24382,
+      "name": "Invoice template",
+      "modified": "2017-10-30 16:49:28",
+      "owner": true,
+      "tags": [
+        "order",
+        "invoice"
+      ]
+    },
+    {
+      "id": 24381,
+      "name": "Label template",
+      "modified": "2017-10-21 11:49:28",
+      "owner": false,
+      "tags": []
+    }
+  ]
+}
