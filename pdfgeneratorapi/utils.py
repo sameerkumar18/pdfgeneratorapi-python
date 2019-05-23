@@ -26,7 +26,7 @@ def dict_to_object(data: dict):
             continue
         if type(value) is dict:
             response_dict.update(value)
-        if type(value) in (str, int):
+        if type(value) in (str, int, bool):
             response_dict.update({key: value})
         elif type(value) is list:
             response_list = []

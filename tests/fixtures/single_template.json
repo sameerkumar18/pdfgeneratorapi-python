@@ -1,5 +1,6 @@
 {
-   "id": "123456",
+  "response": {
+    "id": 123456,
     "name": "My awesome template",
     "tags": "",
     "layout": {
@@ -81,3 +82,4 @@
       "filterBy": []
     }
   }
+}

@@ -15,7 +15,7 @@ import sys
 import urllib
 
 import requests
-from .constants import ALL_OUTPUT_FORMATS, ALL_DOCUMENT_FORMATS, ALL_ACCESS_TYPES
+from .constants import ALL_DOCUMENT_FORMATS, ALL_RESPONSE_FORMATS, ALL_ACCESS_TYPES
 from .decorators import make_response
 from .exceptions import IncorrectParameterError, RequiredParameterMissing
 
@@ -23,7 +23,8 @@ from .exceptions import IncorrectParameterError, RequiredParameterMissing
 class APIBase(object):
     """ The base class for the PDFGeneratorAPI.com Wrapper.
 
-    :param api_key: API Key for PDFGeneratorAPI.com(found under your Account Settings). Preferred: Load from environment.
+    :param api_key: API Key for PDFGeneratorAPI.com(found under your Account Settings).
+                    Preferred: Load from environment.
     :param api_secret: API Secret Key for PDFGeneratorAPI.com(found under your Account Settings).
                        Preferred: Load from environment.
     :param workspace: Name of your workspace. The email you signed up with on PDFGeneratorAPI.com.
@@ -31,7 +32,8 @@ class APIBase(object):
     :param document_format: Document format. Available formats: (pdf, html, zip) Default: pdf.
     :param response_format: Response format. Available formats: (base64, url, I). Default: base64.
     :param signature_auth: Response format. Available formats: (base64, url, I). Default: False.
-    :param region: The region of the server. Basically the subdomain. This wrapper was made in consideration of us1.
+    :param region: The region of the server. Basically the subdomain.
+                   This wrapper was made considering `us1` subdomain.
     :param version: The version of the PDFGeneratorAPI.com. This wrapper was made in consideration of v3.
     :param complete_url: The complete base url of the PDFGeneratorAPI excluding the resource endpoints.
     """
@@ -61,7 +63,7 @@ class APIBase(object):
         self._validate_formats(self.document_format, self.response_format)
 
     def _validate_formats(self, document_format, response_format):
-        if response_format not in ALL_OUTPUT_FORMATS:
+        if response_format not in ALL_RESPONSE_FORMATS:
             raise IncorrectParameterError(
                 "{0} is an invalid output format.".format(self.response_format)
             )
@@ -99,7 +101,7 @@ class APIBase(object):
 
         if params:
             return _prepare_auth_params()
-        user_agent = "pdfgeneratorapi/%s Python/%s".format(
+        user_agent = "pdfgeneratorapi/{api_region}/{api_version} Python/{package_version}/{sys_version}".format(
             package_version="",
             sys_version=sys.version.split(" ", 1)[0],
             api_region=self.region,
@@ -145,8 +147,10 @@ class PDFGenerator(APIBase):
     def all_templates(self, access: list = None, tags: list = None):
         """ Returns list of templates in the workspace.
         
-        :param access: Allows to filter templates by access type. Comma separated list of access types. [`organization`, `private`]
-        :param tags: Allows to filter templates by assigned tags. Comma separated list of tags assigned to template.
+        :param access: Allows to filter templates by access type.
+                       Comma separated list of access types. [`organization`, `private`]
+        :param tags: Allows to filter templates by assigned tags.
+                     Comma separated list of tags assigned to template.
 
         Usage::
 
