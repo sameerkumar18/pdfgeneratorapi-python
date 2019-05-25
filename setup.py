@@ -44,5 +44,5 @@ setup(
     # dependencies). You can install these using the following syntax,
     # for example:
     # $ pip install -e .[dev]
-    extras_require={"dev": ["sphinx", "sphinx-autobuild"]},
+    extras_require={"dev": ["sphinx", "sphinx-autobuild"], "test": ["python-dotenv", ]},
 )
