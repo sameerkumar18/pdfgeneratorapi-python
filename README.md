@@ -85,7 +85,7 @@ You can pass the `api_key`, `api_secret` and `workspace` explicitly. Alternative
 ##### Get a one-click link to  web editor
 ```python
 >>> editor_url = pdf_client.get_editor_url(template_id=48484, data={"name": "Sameer"})
-''https://us1.pdfgeneratorapi.com/api/v3/templates/19375/editor?key=61e5f04ca1794253ed17e6bb986c1702&workspace=demo.example@actualreports.com&signature=75d7c8fb0c06942da2bf76422f1a79eb72cada6d7ab07f7a7d0eaf8d510897d9&data=https://myawesomeapp.com/data/9129381823.json'' 
+'https://us1.pdfgeneratorapi.com/api/v3/templates/19375/editor?key=61e5f04ca1794253ed17e6bb986c1702&workspace=demo.example@actualreports.com&signature=75d7c8fb0c06942da2bf76422f1a79eb72cada6d7ab07f7a7d0eaf8d510897d9&data=https://myawesomeapp.com/data/9129381823.json'
 ```
 
 Tests
