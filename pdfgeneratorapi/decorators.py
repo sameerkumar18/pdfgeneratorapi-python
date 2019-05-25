@@ -22,7 +22,6 @@ from .exceptions import (
 def make_response(func):
     def to_object(*args, **kwargs):
         response = func(*args, **kwargs)
-        # status_code = response.status_code
         try:
             response.raise_for_status()
         except HTTPError as http_err:

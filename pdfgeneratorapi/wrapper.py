@@ -76,9 +76,7 @@ class APIBase(object):
         """ Generates a signature based on `api_key`, `workspace` and `api_secret`. """
         message = self.__api_key + resource + self.__workspace
         signature = hmac.new(
-            bytes(self.__api_secret, "UTF-8"),
-            bytes(message, "UTF-8"),
-            hashlib.sha256,
+            bytes(self.__api_secret, "UTF-8"), bytes(message, "UTF-8"), hashlib.sha256
         ).hexdigest()
         return signature
 
@@ -101,6 +99,7 @@ class APIBase(object):
         Returns a <dict>.
         """
         import pdfgeneratorapi
+
         user_agent = "pdfgeneratorapi/{api_region}/{api_version} Python/{package_version}/{sys_version}".format(
             package_version=pdfgeneratorapi.__version__,
             sys_version=sys.version.split(" ", 1)[0],
