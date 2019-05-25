@@ -1,25 +1,18 @@
 # -*- coding: utf-8 -*-
 
 """
-PyAztro
+pdfgeneratorapi
 ~~~~~~~
-Setup for PyAztro
+Setup for PDFGeneratorAPI
 """
 
 from setuptools import setup, find_packages
-import os
-
-
-if os.path.exists("README.rst"):
-    readme_path = "README.rst"
-else:
-    readme_path = "README.md"
 
 setup(
     name="pdfgeneratorapi",
     version="0.1",
     description="A client library for PDFGeneratorAPI.com",
-    long_description=open(readme_path).read(),
+    long_description=open("README.md").read(),
     url="https://github.com/sameerkumar18/pdfgeneratorapi-python",
     author="Sameer Kumar",
     author_email="sam@sameerkumar.website",

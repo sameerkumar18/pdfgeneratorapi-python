@@ -35,16 +35,16 @@ class APIBase(object):
     :param region: The region of the server. Basically the subdomain.
                    This wrapper was made considering `us1` subdomain.
     :param version: The version of the PDFGeneratorAPI.com. This wrapper was made in consideration of v3.
-    :param complete_url: The complete base url of the PDFGeneratorAPI excluding the resource endpoints.
+    :param api_url: The complete base url of the PDFGeneratorAPI excluding the resource endpoints.
     """
 
     def __init__(self, **kwargs):
-        self.__api_key = kwargs.get("api_key", os.environ.get("PDFGENERATORAPI_KEY"))
+        self.__api_key = kwargs.get("api_key", os.environ.get("PDF_GENERATOR_KEY"))
         self.__api_secret = kwargs.get(
-            "api_secret", os.environ.get("PDFGENERATORAPI_SECRET")
+            "api_secret", os.environ.get("PDF_GENERATOR_SECRET")
         )
         self.__workspace = kwargs.get(
-            "workspace", os.environ.get("PDFGENERATORAPI_WORKSPACE")
+            "workspace", os.environ.get("PDF_GENERATOR_WORKSPACE")
         )
         if not (self.__api_key and self.__api_secret and self.__workspace):
             raise RequiredParameterMissing("Missing API Required Parameters")
@@ -55,10 +55,10 @@ class APIBase(object):
         self.region = kwargs.get("region", "us1")
         self.version = kwargs.get("version", "v3")
 
-        complete_url = (
+        api_url = (
             "https://" + self.region + ".pdfgeneratorapi.com/api/" + self.version + "/"
         )
-        self.API_URL = kwargs.get("complete_url", complete_url)
+        self.API_URL = kwargs.get("api_url", api_url)
 
         self._validate_formats(self.document_format, self.response_format)
 
