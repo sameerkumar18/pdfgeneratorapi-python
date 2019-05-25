@@ -28,7 +28,7 @@ class APIBase(object):
     :param api_secret: API Secret Key for PDFGeneratorAPI.com(found under your Account Settings).
                        Preferred: Load from environment.
     :param workspace: Name of your workspace. The email you signed up with on PDFGeneratorAPI.com.
-                      Preferred: Load from environment.
+                      Preferred: Load from environment. Helper function to set workspace - set_workspace()
     :param document_format: Document format. Available formats: (pdf, html, zip) Default: pdf.
     :param response_format: Response format. Available formats: (base64, url, I). Default: base64.
     :param signature_auth: Response format. Available formats: (base64, url, I). Default: False.
@@ -43,10 +43,8 @@ class APIBase(object):
         self.__api_secret = kwargs.get(
             "api_secret", os.environ.get("PDF_GENERATOR_SECRET")
         )
-        self.__workspace = kwargs.get(
-            "workspace", os.environ.get("PDF_GENERATOR_WORKSPACE")
-        )
-        if not (self.__api_key and self.__api_secret and self.__workspace):
+        self.workspace = kwargs.get("workspace", os.environ.get("PDF_GENERATOR_WORKSPACE"))
+        if not (self.__api_key and self.__api_secret):
             raise RequiredParameterMissing("Missing API Required Parameters")
         self.document_format = kwargs.get("document_format", "pdf")
         self.response_format = kwargs.get("response_format", "base64")
@@ -74,11 +72,15 @@ class APIBase(object):
 
     def _get_signature(self, resource):
         """ Generates a signature based on `api_key`, `workspace` and `api_secret`. """
-        message = self.__api_key + resource + self.__workspace
+        message = self.__api_key + resource + self.workspace
         signature = hmac.new(
             bytes(self.__api_secret, "UTF-8"), bytes(message, "UTF-8"), hashlib.sha256
         ).hexdigest()
         return signature
+
+    def set_workspace(self, workspace):
+        self.workspace = workspace
+        return workspace
 
     def prepare_auth_params(self, resource):
         """ Prepares auth params for one-click URL generation. Used in editor URL.
@@ -89,7 +91,7 @@ class APIBase(object):
         query_params = {
             "key": self.__api_key,
             "signature": self._get_signature(resource),
-            "workspace": self.__workspace,
+            "workspace": self.workspace,
         }
         return query_params
 
@@ -108,7 +110,7 @@ class APIBase(object):
         )
         if self.signature_auth is True:
             if not resource:
-                raise Exception(
+                raise RequiredParameterMissing(
                     "Signature Auth requires resource for signature creation."
                 )
             header_auth = {"X-Auth-Signature": self._get_signature(resource)}
@@ -116,7 +118,7 @@ class APIBase(object):
             header_auth = {"X-Auth-Secret": self.__api_secret}
         request_headers = {
             "X-Auth-Key": self.__api_key,
-            "X-Auth-Workspace": self.__workspace,
+            "X-Auth-Workspace": self.workspace,
             "Content-Type": "application/json; charset=utf-8",
             "Accept": "application/json",
             "User-Agent": user_agent,
@@ -140,6 +142,7 @@ class PDFGenerator(APIBase):
 
       >>> from pdfgeneratorapi import PDFGenerator
       >>> pdfg_client = PDFGenerator()
+      >>> pdf_client.set_workspace('some@workspace.com')
     """
 
     @make_response
@@ -162,12 +165,12 @@ class PDFGenerator(APIBase):
             if any(access) in ALL_ACCESS_TYPES:
                 request_params.update({"access": access})
             else:
-                raise Exception
+                raise IncorrectParameterError('{0} is not a valid access type'.format(access))
         if tags:
             if type(tags) is list:
                 request_params.update({"tags": tags})
             else:
-                raise Exception
+                raise IncorrectParameterError('Tags must be a list.')
         response = requests.get(
             url=self.API_URL + resource,
             headers=self.prepare_headers(resource),

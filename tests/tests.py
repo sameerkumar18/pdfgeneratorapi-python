@@ -20,9 +20,9 @@ class TestCase(unittest.TestCase):
         fixture_dict = json.loads(fixture.decode("utf-8"))
         return dict_to_object(fixture_dict)
 
-    def _load_fixture(self, name, format="json"):
+    def _load_fixture(self, name, fixture_format="json"):
         with open(
-            os.path.dirname(__file__) + "/fixtures/%s.%s" % (name, format), "rb"
+            os.path.dirname(__file__) + "/fixtures/%s.%s" % (name, fixture_format), "rb"
         ) as f:
             return f.read()
 

@@ -67,9 +67,9 @@ class RequiredParameterMissing(PDFGeneratorAPIException):
     pass
 
 
-class InvalidOutputFormat(PDFGeneratorAPIException):
+class InvalidFormat(PDFGeneratorAPIException):
     pass
 
 
-class InvalidFormat(PDFGeneratorAPIException):
+class InvalidAccessType(PDFGeneratorAPIException):
     pass

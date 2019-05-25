@@ -46,7 +46,8 @@ You can pass the `api_key`, `api_secret` and `workspace` explicitly. Alternative
 ```python
 
 >>> from pdfgeneratorapi import PDFGenerator
->>> pdf_client = PDFGenerator(api_key='<PDF_GENERATOR_KEY>', api_secret='<PDF_GENERATOR_SECRET>', workspace='<PDF_GENERATOR_WORKSPACE>')
+>>> pdf_client = PDFGenerator(api_key='<PDF_GENERATOR_KEY>', api_secret='<PDF_GENERATOR_SECRET>')
+>>> pdf_client.set_workspace('<PDF_GENERATOR_WORKSPACE>')
 ```
 ##### Fetch All Templates
 ```python
