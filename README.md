@@ -8,6 +8,7 @@
 [![image](https://img.shields.io/pypi/v/pdfgeneratorapi.svg)](https://pypi.org/project/pdfgeneratorapi/)
 [![image](https://img.shields.io/pypi/l/pdfgeneratorapi.svg)](https://pypi.org/project/pdfgeneratorapi/)
 [![image](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg)](https://saythanks.io/to/sameerkumar18)
+[![image](https://img.shields.io/badge/Paypal-Donate-blue.svg)](https://www.paypal.me/sameerkumar18)
 
 With the PDF Generator API your users can easily create and manage different document templates with an easy-to-use browser based document editor and via API.
 
