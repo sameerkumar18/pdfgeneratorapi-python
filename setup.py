@@ -11,8 +11,9 @@ from setuptools import setup, find_packages
 setup(
     name="pdfgeneratorapi",
     version="0.1",
-    description="A client library for PDFGeneratorAPI.com",
+    description="A python client library for PDFGeneratorAPI.com",
     long_description=open("README.md").read(),
+    long_description_content_type='text/markdown',
     url="https://github.com/sameerkumar18/pdfgeneratorapi-python",
     author="Sameer Kumar",
     author_email="sam@sameerkumar.website",
