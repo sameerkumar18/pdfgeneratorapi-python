@@ -4,5 +4,5 @@ install:
   - pip install .[test]
 # command to run tests
 script:
-  - python setup.py tests
+  - python setup.py test
 cache: pip
