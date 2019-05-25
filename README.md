@@ -39,7 +39,7 @@ Usage
 ```
 
 
-You can pass the `api_key`, `api_secret` and `workspace` explicitly. Alternatively, declare these environment variables `PDF_GENERATOR_KEY`, `PDF_GENERATOR_SECRET`, `PDF_GENERATOR_WORKSPACE`.
+You can pass the `api_key`, `api_secret` and `workspace` explicitly. Alternatively, declare these environment variables `PDF_GENERATOR_KEY`, `PDF_GENERATOR_SECRET`.
 
 #### Features
 
