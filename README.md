@@ -69,7 +69,7 @@ You can pass the `api_key`, `api_secret` and `workspace` explicitly. Alternative
 ```
 ##### Create a new template
 ```python
->>> new_template = pdf_client.create_template(name=<TEMPLATE_NAME>)
+>>> new_template = pdf_client.create_template(name=''<TEMPLATE_NAME>')
 >>> new_template.id
 24386
 >>> new_template.name
@@ -86,12 +86,6 @@ You can pass the `api_key`, `api_secret` and `workspace` explicitly. Alternative
 >>> editor_url = pdf_client.get_editor_url(template_id=48484, data={"name": "Sameer"})
 ''https://us1.pdfgeneratorapi.com/api/v3/templates/19375/editor?key=61e5f04ca1794253ed17e6bb986c1702&workspace=demo.example@actualreports.com&signature=75d7c8fb0c06942da2bf76422f1a79eb72cada6d7ab07f7a7d0eaf8d510897d9&data=https://myawesomeapp.com/data/9129381823.json'' 
 ```
-- [Basic domestic shipment](examples/basic-shipment.py)
-- [International shipment](examples/international-shipment.py) - Custom forms, interntational destinations
-- [Price estimation matrix](examples/estimate-shipping-prices.py)
-- [Retrieve rates, filter by delivery time and purchase cheapest label](examples/filter-by-delivery-time.py)
-- [Retrieve rates, purchase label for fastest delivery option](examples/purchase-fastest-service.py)
-- [Retrieve rates so customer can pick preferred shipping method, purchase label](examples/get-rates-to-show-customer.py)
 
 Tests
 -----
@@ -118,7 +112,7 @@ PDF Generator API is a RESTful API and a template builder for creating PDF docum
 
 You can explicitly override certain default assumptions like - 
 - Authentication: Signature Authentication. To use Simple Authentication, simple pass `signature_auth=False` in the object init.
-- API URL: 'https://<REGION>.pdfgeneratorapi.com/api/<API_VERSION>/'. To override - `api_url='<SOME_URL>'`.
+- API URL: `https://<REGION>.pdfgeneratorapi.com/api/<API\_VERSION>/` . To override - `api_url='<SOME_URL>'`.
 - API Key: `api_key`. Default loads from environment var `PDF_GENERATOR_KEY`
 - API Secret: `api_secret`. Default loads from environment var `PDF_GENERATOR_SECRET`
 - Workspace: `workspace`. Default loads from environment var `PDF_GENERATOR_WORKSPACE`
