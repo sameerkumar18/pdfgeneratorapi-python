@@ -20,5 +20,5 @@ The PDF Generator API features a web API architecture, allowing you to code in t
 This API supports the JSON media type, and uses UTF-8 character encoding.
 
  """
-__version__ = "0.1"
+__version__ = "0.2"
 from .wrapper import PDFGenerator
