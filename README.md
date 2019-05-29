@@ -32,13 +32,16 @@ Usage
 
 ```python
 
-from pdfgeneratorapi import PDFGenerator
+>>> from pdfgeneratorapi import PDFGenerator
 
-pdf_client = PDFGenerator(api_key='<PDF_GENERATOR_KEY>', api_secret='<PDF_GENERATOR_SECRET>', workspace='<PDF_GENERATOR_WORKSPACE>')
+>>> pdf_client = PDFGenerator(api_key='<PDF_GENERATOR_KEY>', api_secret='<PDF_GENERATOR_SECRET>')
+>>> pdf_client.set_workspace('<PDF_GENERATOR_WORKSPACE>')
 ```
 
 
-You can pass the `api_key`, `api_secret` and `workspace` explicitly. Alternatively, declare these environment variables `PDF_GENERATOR_KEY`, `PDF_GENERATOR_SECRET`, `PDF_GENERATOR_WORKSPACE`.
+You can pass the `api_key`, `api_secret` and `workspace` explicitly. Alternatively, declare these environment variables `PDF_GENERATOR_KEY`, `PDF_GENERATOR_SECRET`.
+
+For wrapper usage code snippets please check examples.py
 
 #### Features
 
@@ -46,31 +49,33 @@ You can pass the `api_key`, `api_secret` and `workspace` explicitly. Alternative
 ```python
 
 >>> from pdfgeneratorapi import PDFGenerator
->>> pdf_client = PDFGenerator(api_key='<PDF_GENERATOR_KEY>', api_secret='<PDF_GENERATOR_SECRET>', workspace='<PDF_GENERATOR_WORKSPACE>')
+>>> pdf_client = PDFGenerator(api_key='<PDF_GENERATOR_KEY>', api_secret='<PDF_GENERATOR_SECRET>')
+>>> pdf_client.set_workspace('<PDF_GENERATOR_WORKSPACE>')
 ```
-##### Fetch All Templates
-```python
->>> templates = pdf_client.all_templates()
->>> templates[0].id
-1234
->>> templates[0].name
-'Some name'
-```
-##### Get template by ID
-```
->>> template = pdf_client.get_template(template_id=<TEMPLATE_ID>)
->>> template.layout.format
-'A4'
-```
+
 ##### Generate a new Document
 ```python
 >>> new_pdf = pdf_client.create_document(template_id=48484, data={"name": "Sameer Kumar"}, document_format="pdf", response_format="url")
 >>> new_pdf.response
 'https://us1.pdfgeneratorapi.com/share/5434/ce2fc41de8e51fc7db2cbc1700075a92'
 ```
+##### Fetch All Templates
+```python
+>>> templates = pdf_client.all_templates(tags=['test_tag'], access=['private'])
+>>> templates[0].id
+1234
+>>> templates[0].name
+'Some name'
+```
+##### Get template by ID
+```python
+>>> template = pdf_client.get_template(template_id=<TEMPLATE_ID>)
+>>> template.layout.format
+'A4'
+```
 ##### Create a new template
 ```python
->>> new_template = pdf_client.create_template(name=''<TEMPLATE_NAME>')
+>>> new_template = pdf_client.create_template(name='<TEMPLATE_NAME>')
 >>> new_template.id
 24386
 >>> new_template.name
@@ -101,19 +106,11 @@ Run the test with the following command:
 $ python setup.py test
 ```
 
-## Documentation
-
-Please see [https://docs.pdfgeneratorapi.com/](https://docs.pdfgeneratorapi.com/) for complete up-to-date documentation.
-
-## About PDFGeneratorAPI.com
-
-PDF Generator API is a RESTful API and a template builder for creating PDF documents from Your software, from Your data. With PDF Generator API you can allow your users to create and manage different document templates with an easy-to-use browser based document editor. And you can merge templates with data from your own software via RESTful API to generate PDF and HTML documents.
-
 ## Default Values
 
 You can explicitly override certain default assumptions like - 
 - Authentication: Signature Authentication. To use Simple Authentication, simple pass `signature_auth=False` in the object init.
-- API URL: `https://<REGION>.pdfgeneratorapi.com/api/<API\_VERSION>/` . To override - `api_url='<SOME_URL>'`.
+- API URL: `https://<REGION>.pdfgeneratorapi.com/api/<API_VERSION>/` . To override - `api_url='<SOME_URL>'`.
 - API Key: `api_key`. Default loads from environment var `PDF_GENERATOR_KEY`
 - API Secret: `api_secret`. Default loads from environment var `PDF_GENERATOR_SECRET`
 - Workspace: `workspace`. Default loads from environment var `PDF_GENERATOR_WORKSPACE`
@@ -122,7 +119,19 @@ You can explicitly override certain default assumptions like -
 - Document Format: `document_format`. Default - "pdf"
 - Response Format: `response_format`. Default - "base64"
 
-### About Author
+## Documentation
+
+Please see [https://docs.pdfgeneratorapi.com/](https://docs.pdfgeneratorapi.com/) for complete up-to-date documentation.
+
+## About PDFGeneratorAPI.com
+
+PDF Generator API is a RESTful API and a template builder for creating PDF documents from Your software, from Your data. With PDF Generator API you can allow your users to create and manage different document templates with an easy-to-use browser based document editor. And you can merge templates with data from your own software via RESTful API to generate PDF and HTML documents.
+
+## Support
+If you have any API related query/issue please contact support@pdfgeneratorapi.com
+
+For any wrapper related query/issue, please raise a GitHub issue.
+## About Author
 [Sameer Kumar](https://www.sameerkumar.website/)
 
 Find me on [Twitter](https://twitter.com/sameer_kumar018)

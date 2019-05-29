@@ -2,7 +2,7 @@
 
 """
 pdfgeneratorapi.exceptions
-~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This module contains all the custom defined exceptions.
 """
@@ -67,9 +67,9 @@ class RequiredParameterMissing(PDFGeneratorAPIException):
     pass
 
 
-class InvalidOutputFormat(PDFGeneratorAPIException):
+class InvalidFormat(PDFGeneratorAPIException):
     pass
 
 
-class InvalidFormat(PDFGeneratorAPIException):
+class InvalidAccessType(PDFGeneratorAPIException):
     pass

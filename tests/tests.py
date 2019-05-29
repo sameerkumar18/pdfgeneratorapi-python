@@ -20,21 +20,25 @@ class TestCase(unittest.TestCase):
         fixture_dict = json.loads(fixture.decode("utf-8"))
         return dict_to_object(fixture_dict)
 
-    def _load_fixture(self, name, format="json"):
+    def _load_fixture(self, name, fixture_format="json"):
         with open(
-            os.path.dirname(__file__) + "/fixtures/%s.%s" % (name, format), "rb"
+            os.path.dirname(__file__) + "/fixtures/%s.%s" % (name, fixture_format), "rb"
         ) as f:
             return f.read()
 
 
 class PDFGeneratorAPITests(TestCase):
     def test_get_all_templates(self):
+
         all_templates = self.pgi.all_templates()
+
         response = self.prepare_response(fixture_name="all_templates")
         self.assertEqual(type(all_templates), type(response))
 
     def test_get_template_by_id(self):
+
         template = self.pgi.get_template(template_id=self.sample_template_id)
+
         response = self.prepare_response(fixture_name="single_template")
         self.assertEqual(type(template), type(response))
         self.assertEqual(type(template.id), type(response.id))

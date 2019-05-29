@@ -2,7 +2,7 @@
 
 """
 pdfgeneratorapi.constants
-~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This module contains constants used in the wrapper.
 """

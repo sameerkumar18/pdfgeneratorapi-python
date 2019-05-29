@@ -2,7 +2,7 @@
 
 """
 pdfgeneratorapi.utils
-~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
 
 This module contains the utility functions.
 """
@@ -13,7 +13,10 @@ from .response import PDFGeneratorResponse
 
 
 def create_py_object(item: dict):
+    if not len(item):
+        return item
     map_item = PDFGeneratorResponse(item)
+
     map_item.__setattr__("to_dict", item)
     map_item.__setattr__("to_json", json.dumps(item))
     return map_item
@@ -34,5 +37,8 @@ def dict_to_object(data: dict):
                 map_item = create_py_object(element)
                 response_list.append(map_item)
             return response_list
-    response_object = create_py_object(response_dict)
-    return response_object
+    if len(response_dict):
+        response_object = create_py_object(response_dict)
+        return response_object
+    else:
+        return []

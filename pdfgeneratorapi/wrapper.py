@@ -2,7 +2,7 @@
 
 """
 pdfgeneratorapi.wrapper
-~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
 
 This module contains the resource wrapper for PDFGeneratorAPI.com.
 """
@@ -28,7 +28,7 @@ class APIBase(object):
     :param api_secret: API Secret Key for PDFGeneratorAPI.com(found under your Account Settings).
                        Preferred: Load from environment.
     :param workspace: Name of your workspace. The email you signed up with on PDFGeneratorAPI.com.
-                      Preferred: Load from environment.
+                      Preferred: Load from environment. Helper function to set workspace - set_workspace()
     :param document_format: Document format. Available formats: (pdf, html, zip) Default: pdf.
     :param response_format: Response format. Available formats: (base64, url, I). Default: base64.
     :param signature_auth: Response format. Available formats: (base64, url, I). Default: False.
@@ -43,10 +43,10 @@ class APIBase(object):
         self.__api_secret = kwargs.get(
             "api_secret", os.environ.get("PDF_GENERATOR_SECRET")
         )
-        self.__workspace = kwargs.get(
+        self.workspace = kwargs.get(
             "workspace", os.environ.get("PDF_GENERATOR_WORKSPACE")
         )
-        if not (self.__api_key and self.__api_secret and self.__workspace):
+        if not (self.__api_key and self.__api_secret):
             raise RequiredParameterMissing("Missing API Required Parameters")
         self.document_format = kwargs.get("document_format", "pdf")
         self.response_format = kwargs.get("response_format", "base64")
@@ -55,8 +55,8 @@ class APIBase(object):
         self.region = kwargs.get("region", "us1")
         self.version = kwargs.get("version", "v3")
 
-        api_url = (
-            "https://" + self.region + ".pdfgeneratorapi.com/api/" + self.version + "/"
+        api_url = "https://{region}.pdfgeneratorapi.com/api/{version}/".format(
+            region=self.region, version=self.version
         )
         self.API_URL = kwargs.get("api_url", api_url)
 
@@ -74,11 +74,17 @@ class APIBase(object):
 
     def _get_signature(self, resource):
         """ Generates a signature based on `api_key`, `workspace` and `api_secret`. """
-        message = self.__api_key + resource + self.__workspace
+        message = "{api_key}{resource}{workspace}".format(
+            api_key=self.__api_key, resource=resource, workspace=self.workspace
+        )
         signature = hmac.new(
             bytes(self.__api_secret, "UTF-8"), bytes(message, "UTF-8"), hashlib.sha256
         ).hexdigest()
         return signature
+
+    def set_workspace(self, workspace):
+        self.workspace = workspace
+        return workspace
 
     def prepare_auth_params(self, resource):
         """ Prepares auth params for one-click URL generation. Used in editor URL.
@@ -89,7 +95,7 @@ class APIBase(object):
         query_params = {
             "key": self.__api_key,
             "signature": self._get_signature(resource),
-            "workspace": self.__workspace,
+            "workspace": self.workspace,
         }
         return query_params
 
@@ -108,7 +114,7 @@ class APIBase(object):
         )
         if self.signature_auth is True:
             if not resource:
-                raise Exception(
+                raise RequiredParameterMissing(
                     "Signature Auth requires resource for signature creation."
                 )
             header_auth = {"X-Auth-Signature": self._get_signature(resource)}
@@ -116,7 +122,7 @@ class APIBase(object):
             header_auth = {"X-Auth-Secret": self.__api_secret}
         request_headers = {
             "X-Auth-Key": self.__api_key,
-            "X-Auth-Workspace": self.__workspace,
+            "X-Auth-Workspace": self.workspace,
             "Content-Type": "application/json; charset=utf-8",
             "Accept": "application/json",
             "User-Agent": user_agent,
@@ -140,6 +146,7 @@ class PDFGenerator(APIBase):
 
       >>> from pdfgeneratorapi import PDFGenerator
       >>> pdfg_client = PDFGenerator()
+      >>> pdf_client.set_workspace('some@workspace.com')
     """
 
     @make_response
@@ -159,17 +166,19 @@ class PDFGenerator(APIBase):
         resource = "templates"
         request_params = {}
         if access:
-            if any(access) in ALL_ACCESS_TYPES:
-                request_params.update({"access": access})
+            if set(access) <= set(ALL_ACCESS_TYPES):
+                request_params.update({"access": ",".join(access)})
             else:
-                raise Exception
+                raise IncorrectParameterError(
+                    "{0} is not a valid access type".format(access)
+                )
         if tags:
             if type(tags) is list:
-                request_params.update({"tags": tags})
+                request_params.update({"tags": ",".join(tags)})
             else:
-                raise Exception
+                raise IncorrectParameterError("Tags must be a list.")
         response = requests.get(
-            url=self.API_URL + resource,
+            url="{api_url}{resource}".format(api_url=self.API_URL, resource=resource),
             headers=self.prepare_headers(resource),
             params=request_params,
         )
@@ -186,7 +195,7 @@ class PDFGenerator(APIBase):
           >>> pdfg_client.get_template(template_id=123)
            <PDFGeneratorResponse>
         """
-        resource = "templates/{0}".format(str(template_id))
+        resource = "templates/{template_id}".format(template_id=str(template_id))
         response = requests.get(
             url="{base_url}{resource}".format(base_url=self.API_URL, resource=resource),
             headers=self.prepare_headers(resource),
@@ -208,14 +217,14 @@ class PDFGenerator(APIBase):
         """
         resource = "templates"
         response = requests.post(
-            url=self.API_URL + resource,
+            url="{base_url}{resource}".format(base_url=self.API_URL, resource=resource),
             headers=self.prepare_headers(resource),
             json={"name": name},
         )
         return response
 
     @make_response
-    def create_template_copy(self, template_id: int, name: str):
+    def create_template_copy(self, template_id: int, name: str = ""):
         """ Creates a copy of a template to the workspace.
 
         :param template_id: Unique ID of the template.
@@ -229,7 +238,7 @@ class PDFGenerator(APIBase):
         resource = "templates/{template_id}/copy".format(template_id=str(template_id))
         request_params = {"name": name}
         response = requests.post(
-            url=self.API_URL + resource,
+            url="{base_url}{resource}".format(base_url=self.API_URL, resource=resource),
             headers=self.prepare_headers(resource),
             params=request_params,
         )
@@ -248,7 +257,8 @@ class PDFGenerator(APIBase):
         """
         resource = "templates/{template_id}".format(template_id=str(template_id))
         response = requests.delete(
-            url=self.API_URL + resource, headers=self.prepare_headers(resource)
+            url="{base_url}{resource}".format(base_url=self.API_URL, resource=resource),
+            headers=self.prepare_headers(resource),
         )
         return response
 
@@ -283,7 +293,7 @@ class PDFGenerator(APIBase):
         resource = "templates/{template_id}/output".format(template_id=str(template_id))
         request_params = {"format": document_format, "output": response_format}
         response = requests.post(
-            url=self.API_URL + resource,
+            url="{base_url}{resource}".format(base_url=self.API_URL, resource=resource),
             headers=self.prepare_headers(resource),
             params=request_params,
             json=data,
