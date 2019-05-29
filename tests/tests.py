@@ -29,12 +29,16 @@ class TestCase(unittest.TestCase):
 
 class PDFGeneratorAPITests(TestCase):
     def test_get_all_templates(self):
+
         all_templates = self.pgi.all_templates()
+
         response = self.prepare_response(fixture_name="all_templates")
         self.assertEqual(type(all_templates), type(response))
 
     def test_get_template_by_id(self):
+
         template = self.pgi.get_template(template_id=self.sample_template_id)
+
         response = self.prepare_response(fixture_name="single_template")
         self.assertEqual(type(template), type(response))
         self.assertEqual(type(template.id), type(response.id))

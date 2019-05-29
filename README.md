@@ -52,7 +52,7 @@ You can pass the `api_key`, `api_secret` and `workspace` explicitly. Alternative
 ```
 ##### Fetch All Templates
 ```python
->>> templates = pdf_client.all_templates()
+>>> templates = pdf_client.all_templates(tags=['test_tag'], access=['private'])
 >>> templates[0].id
 1234
 >>> templates[0].name
@@ -72,7 +72,7 @@ You can pass the `api_key`, `api_secret` and `workspace` explicitly. Alternative
 ```
 ##### Create a new template
 ```python
->>> new_template = pdf_client.create_template(name=''<TEMPLATE_NAME>')
+>>> new_template = pdf_client.create_template(name='<TEMPLATE_NAME>')
 >>> new_template.id
 24386
 >>> new_template.name

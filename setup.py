@@ -13,7 +13,7 @@ setup(
     version="0.2",
     description="A python client library for PDFGeneratorAPI.com",
     long_description=open("README.md").read(),
-    long_description_content_type='text/markdown',
+    long_description_content_type="text/markdown",
     url="https://github.com/sameerkumar18/pdfgeneratorapi-python",
     author="Sameer Kumar",
     author_email="sam@sameerkumar.website",
@@ -44,5 +44,5 @@ setup(
     # dependencies). You can install these using the following syntax,
     # for example:
     # $ pip install -e .[dev]
-    extras_require={"dev": ["sphinx", "sphinx-autobuild"], "test": ["python-dotenv", ]},
+    extras_require={"dev": ["sphinx", "sphinx-autobuild"], "test": ["python-dotenv"]},
 )

@@ -2,7 +2,7 @@
 
 """
 pdfgeneratorapi.response
-~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 This module contains the response class.
 """

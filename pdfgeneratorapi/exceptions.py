@@ -2,7 +2,7 @@
 
 """
 pdfgeneratorapi.exceptions
-~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This module contains all the custom defined exceptions.
 """

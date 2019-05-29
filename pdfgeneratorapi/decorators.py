@@ -2,7 +2,7 @@
 
 """
 pdfgeneratorapi.decorators
-~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This module contains decorator used in the wrapper.
 """
