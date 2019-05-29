@@ -20,31 +20,33 @@ new_pdf = pdf_client.create_document(
 
 # Fetch All Templates
 all_templates = pdf_client.all_templates()
-print(all_templates)
+# Returns a list
 
 # Advanced optional fields =>
 # Fetch all templates and filter them by a tag
 all_templates = pdf_client.all_templates(tags=["test_tag"])
-print(all_templates)
+# Returns a list
 
 # Fetch all templates and filter them by a access type
 all_templates = pdf_client.all_templates(access=["private"])
-
+# Returns a list
 
 # Get template info by ID
 template = pdf_client.get_template(template_id=48484)
+# Returns an object with attributes
 
 # Create a new template
 new_template = pdf_client.create_template(name="some new template")
-
+# Returns an object with attributes
 
 # Duplicate an existing template
 # `name` is optional. You can create a template copy without specifying the name
 copy_template = pdf_client.create_template_copy(
     template_id=48484, name="Copied template"
 )
-
+# Returns an object with attributes
 
 # Get a one-click link to  web editor
 # Just forms a url
 editor_url = pdf_client.get_editor_url(template_id=48484, data={"name": "Sameer"})
+# Returns a URL string

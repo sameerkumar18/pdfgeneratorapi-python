@@ -41,6 +41,8 @@ Usage
 
 You can pass the `api_key`, `api_secret` and `workspace` explicitly. Alternatively, declare these environment variables `PDF_GENERATOR_KEY`, `PDF_GENERATOR_SECRET`.
 
+For wrapper usage code snippets please check examples.py
+
 #### Features
 
 
@@ -66,7 +68,7 @@ You can pass the `api_key`, `api_secret` and `workspace` explicitly. Alternative
 'Some name'
 ```
 ##### Get template by ID
-```
+```python
 >>> template = pdf_client.get_template(template_id=<TEMPLATE_ID>)
 >>> template.layout.format
 'A4'
@@ -108,7 +110,7 @@ $ python setup.py test
 
 You can explicitly override certain default assumptions like - 
 - Authentication: Signature Authentication. To use Simple Authentication, simple pass `signature_auth=False` in the object init.
-- API URL: `https://<REGION>.pdfgeneratorapi.com/api/<API\_VERSION>/` . To override - `api_url='<SOME_URL>'`.
+- API URL: `https://<REGION>.pdfgeneratorapi.com/api/<API_VERSION>/` . To override - `api_url='<SOME_URL>'`.
 - API Key: `api_key`. Default loads from environment var `PDF_GENERATOR_KEY`
 - API Secret: `api_secret`. Default loads from environment var `PDF_GENERATOR_SECRET`
 - Workspace: `workspace`. Default loads from environment var `PDF_GENERATOR_WORKSPACE`
