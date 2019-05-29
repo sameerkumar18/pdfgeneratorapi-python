@@ -2,7 +2,8 @@
 
 """
 pdfgeneratorapi
-~~~~~~~
+~~~~~~~~~~~~~~~
+
 Setup for PDFGeneratorAPI
 """
 

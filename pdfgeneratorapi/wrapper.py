@@ -224,7 +224,7 @@ class PDFGenerator(APIBase):
         return response
 
     @make_response
-    def create_template_copy(self, template_id: int, name: str):
+    def create_template_copy(self, template_id: int, name: str = ""):
         """ Creates a copy of a template to the workspace.
 
         :param template_id: Unique ID of the template.
