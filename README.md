@@ -93,6 +93,11 @@ For wrapper usage code snippets please check examples.py
 'https://us1.pdfgeneratorapi.com/api/v3/templates/19375/editor?key=61e5f04ca1794253ed17e6bb986c1702&workspace=demo.example@actualreports.com&signature=75d7c8fb0c06942da2bf76422f1a79eb72cada6d7ab07f7a7d0eaf8d510897d9&data=https://myawesomeapp.com/data/9129381823.json'
 ```
 
+###### Extra Feature
+All PDFGeneratorResponse objects have two extra attributes:
+1) `to_json`: Returns the API response in raw JSON format.
+2) `to_dict`: Returns the API response in python dict format.
+
 Tests
 -----
 Set the following environment variable:

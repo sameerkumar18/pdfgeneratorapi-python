@@ -10,6 +10,9 @@ pdf_client.set_workspace("demo.example@actualreports.com")
 
 
 # For defaults of document_format, response_format, access and other API defaults, please check the `Default Values` section of Readme
+
+# All PDFGeneratorResponse objects have attributes like `to_json` to get the response in JSON format, `to_dict` to get the response in python dict format
+
 # Generate a new Document
 new_pdf = pdf_client.create_document(
     template_id=48484,
@@ -45,6 +48,18 @@ copy_template = pdf_client.create_template_copy(
     template_id=48484, name="Copied template"
 )
 # Returns an object with attributes
+
+
+# Advanced usage
+
+# `to_dict`
+new_pdf.to_dict
+# Returns the response object as python dict
+
+# `to_json`
+new_pdf.to_json
+# Returns the response object as raw JSON
+
 
 # Get a one-click link to  web editor
 # Just forms a url
