@@ -1,4 +1,4 @@
-[logo]: https://pdfgeneratorapi.com/assets/deploy/web/images/logo-light.png "PDFGeneratorAPI.com Python Wrapper Logo"
+[logo]: https://logo.clearbit.com/pdfgeneratorapi.com/ "PDFGeneratorAPI.com Python Wrapper Logo"
 
 ![alt text][logo] PDFGeneratorAPI.com Python wrapper
 ==================================================== 
